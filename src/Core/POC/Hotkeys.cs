@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using WinApi.User32;
-namespace CLI
+
+namespace Core.POC
 {
-    class Program
+    public static class Hotkeys
     {
         const int HOTKEY_ALTB = 1;
         const int HOTKEY_ALTC = 2;
-        static void Main(string[] args)
+        
+        public static void POC_Hotkeys()
         {
+            
             if (User32Methods.RegisterHotKey(
                     IntPtr.Zero, 
                     HOTKEY_ALTB, 
@@ -25,7 +28,7 @@ namespace CLI
                     Console.Out.WriteLine("Registered.");
                     bool running = true;
                     while (running &&
-                        User32Methods.GetMessage(out var message, IntPtr.Zero, 0, 0) != 0)
+                           User32Methods.GetMessage(out var message, IntPtr.Zero, 0, 0) != 0)
                     {
                         if (message.Value == 0x0312)
                         {
