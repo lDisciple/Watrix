@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "src\CLI\CLI.csproj",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.csproj", "{20BADD73-B6B5-41E6-A7F5-6F7FB3450ED3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watrix", "Watrix\Watrix.csproj", "{34E7A1B1-4BF1-47A1-BC3C-74DC0F3767BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watrix", "src\Watrix\Watrix.csproj", "{34E7A1B1-4BF1-47A1-BC3C-74DC0F3767BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
