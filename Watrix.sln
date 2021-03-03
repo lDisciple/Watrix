@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watrix", "Watrix\Watrix.csproj", "{B412A239-D407-42B4-81E0-712CB90F2DDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{440DC186-1D8D-486B-A608-A8BF89BF73AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI", "CLI\CLI.csproj", "{739B95F0-52EE-407B-9BF8-8284C1FBD77A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B412A239-D407-42B4-81E0-712CB90F2DDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B412A239-D407-42B4-81E0-712CB90F2DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B412A239-D407-42B4-81E0-712CB90F2DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B412A239-D407-42B4-81E0-712CB90F2DDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{440DC186-1D8D-486B-A608-A8BF89BF73AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{440DC186-1D8D-486B-A608-A8BF89BF73AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{440DC186-1D8D-486B-A608-A8BF89BF73AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{440DC186-1D8D-486B-A608-A8BF89BF73AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739B95F0-52EE-407B-9BF8-8284C1FBD77A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739B95F0-52EE-407B-9BF8-8284C1FBD77A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739B95F0-52EE-407B-9BF8-8284C1FBD77A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739B95F0-52EE-407B-9BF8-8284C1FBD77A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
