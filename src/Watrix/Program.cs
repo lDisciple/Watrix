@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
+using Core.POC;
 
 namespace Watrix
 {
@@ -9,8 +11,9 @@ namespace Watrix
         
         static void Main(string[] args)
         {
-            app = new Program();
-            app.Run();
+            // app = new Program();
+            // app.Run();
+            Desktop.POC_SwitchDesktopNoWPF();
         }
         
         protected override void OnStartup(StartupEventArgs e)
