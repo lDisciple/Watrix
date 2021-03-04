@@ -9,8 +9,4 @@
       <PackageReference Include="WinApi" Version="4.0.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Hotkeys" />
-    </ItemGroup>
-
 </Project>
