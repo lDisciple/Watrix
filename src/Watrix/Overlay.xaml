@@ -24,33 +24,33 @@
             <Button Name="DebugBtn" Content="Debug" Padding="10" Click="DebugBtn_Click" />
             <Button Name="ExitBtn" Content="Close" Padding="10" Click="ExitBtn_OnClick" />
         </StackPanel>
-        <UniformGrid Grid.Row="1" Grid.Column="1" Background="Aqua" DockPanel.Dock="Top">
-            <Border Padding="10">
-                <DockPanel Background="Blue" />
+        <UniformGrid Name="ScreenGrid" Grid.Row="1" Grid.Column="1" DockPanel.Dock="Top">
+            <Border Padding="5">
+                <DockPanel Name="Holder00" Background="Blue" />
             </Border>
-            <Border Padding="10">
-                <DockPanel Background="Blue" />
+            <Border Padding="5">
+                <DockPanel Name="Holder01" Background="Blue" />
             </Border>
-            <Border Padding="10">
-                <DockPanel Background="Blue" />
+            <Border Padding="5">
+                <DockPanel Name="Holder02" Background="Blue" />
             </Border>
-            <Border Padding="10">
-                <DockPanel Background="Blue" />
+            <Border Padding="5">
+                <DockPanel Name="Holder10" Background="Blue" />
             </Border>
-            <Border Padding="10">
-                <DockPanel Background="Blue" />
+            <Border Padding="5">
+                <DockPanel Name="Holder11" Background="Blue" />
             </Border>
-            <Border Padding="10">
-                <DockPanel Background="Blue" />
+            <Border Padding="5">
+                <DockPanel Name="Holder12" Background="Blue" />
             </Border>
-            <Border Padding="10">
-                <DockPanel Background="Blue" />
+            <Border Padding="5">
+                <DockPanel Name="Holder20" Background="Blue" />
             </Border>
-            <Border Padding="10">
-                <DockPanel Background="Blue" />
+            <Border Padding="5">
+                <DockPanel Name="Holder21" Background="Blue" />
             </Border>
-            <Border Padding="10">
-                <DockPanel Background="Blue" />
+            <Border Padding="5">
+                <DockPanel Name="Holder22" Background="Blue" />
             </Border>
         </UniformGrid>
     </Grid>
