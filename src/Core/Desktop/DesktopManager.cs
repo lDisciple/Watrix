@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using WindowsDesktop;
 
 namespace Core.Hotkeys.Desktop
@@ -36,6 +37,16 @@ namespace Core.Hotkeys.Desktop
             VirtualDesktop current = VirtualDesktop.Current;
             return desktops.Select((value, index) => new {Value = value, Index = index})
                 .Single(p => p.Value.Id.Equals(current.Id)).Index;
+        }
+
+        internal static void PinWindow(IntPtr handle)
+        {
+            VirtualDesktop.PinWindow(handle);
+        }
+
+        internal static void UnpinWindow(IntPtr handle)
+        {
+            VirtualDesktop.UnpinWindow(handle);
         }
 
         internal static void MatchCount(int count)
