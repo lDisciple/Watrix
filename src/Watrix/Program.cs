@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Interop;
-using Core.Desktop;
 using Core.Hotkeys;
 using Core.Hotkeys.Desktop;
 
@@ -37,7 +35,6 @@ namespace Watrix
             hotkeys.Start();
             Overlay overlay = new Overlay(matrix);
             overlay.Show();
-            
         }
     }
 }

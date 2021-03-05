@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         AllowsTransparency="True"
         WindowStyle="None"
-        Title="Overlay" Height="450" Width="800">
-    <Grid Background="Aqua">
+        Title="Overlay" Height="600" Width="900">
+    <Grid Name="BackgroundPanel">
         <DockPanel>
             <Button Width="100" Height="100" Content="Center" Click="ButtonBase_OnClick" /> 
         </DockPanel>
