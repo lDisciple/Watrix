@@ -2,7 +2,7 @@
 
 namespace Core.COM
 {
-    public class Utils
+    public static class Utils
     {
         
         public static T FromShell<T>(Guid service)
@@ -30,6 +30,15 @@ namespace Core.COM
             var instance = Activator.CreateInstance(vdmType ?? throw new InvalidOperationException(
                 $"Could not get type of {guid}"));
             return (T) instance;
+        }
+        
+        public static T Get<T>(this IObjectArray arr, int i)
+        {
+            arr.GetAt(
+                (uint) i,
+                typeof(IVirtualDesktop).GUID,
+                out var desktop);
+            return (T) desktop;
         }
 
     }

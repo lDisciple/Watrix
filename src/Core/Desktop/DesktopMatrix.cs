@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Windows;
-using System.Windows.Interop;
 using Core.Desktop;
 
 namespace Core.Hotkeys.Desktop
@@ -58,21 +56,14 @@ namespace Core.Hotkeys.Desktop
             return IndexToPoint(DesktopManager.CurrentDesktop());
         }
 
-        public void PinWindow(Window window)
+        public void PinWindow(IntPtr handle)
         {
-            IntPtr handle = new WindowInteropHelper(window).Handle;
-            // const int exstyle = (int) WinApi.User32.WindowLongFlags.GWL_EXSTYLE;
-            // const int topmostStyle = (int) WinApi.User32.WindowExStyles.WS_EX_TOPMOST;
-            // var style = WinApi.User32.User32Methods.GetWindowLongPtr(handle, exstyle);
-            // style = new IntPtr( style.ToInt64() | topmostStyle );
-            // WinApi.User32.User32Methods.SetWindowLongPtr( handle, exstyle, style );
-            // DesktopManager.PinWindow(handle);
+            DesktopManager.PinWindow(handle);
         }
         
-        public void UnpinWindow(Window window)
+        public void UnpinWindow(IntPtr handle)
         {
-            IntPtr handle = new WindowInteropHelper(window).Handle;
-            // DesktopManager.UnpinWindow(handle);
+            DesktopManager.UnpinWindow(handle);
         }
 
         private int PointToIndex(Point p)

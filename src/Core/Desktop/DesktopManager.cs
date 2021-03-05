@@ -1,53 +1,72 @@
 ﻿using System;
 using System.Linq;
-using WindowsDesktop;
+using Core.COM;
 
 
 namespace Core.Desktop
 {
     public static class DesktopManager
     {
+
+        static DesktopManager()
+        {
+            ComObjects.Initialize();
+        }
+        
         internal static void GoTo(int i)
         {
-            VirtualDesktop.GetDesktops()[i].Switch();
+            var desktops = ComObjects.VirtualDesktopManagerInternal.GetDesktops();
+            var desktop = desktops.Get<IVirtualDesktop>(i);
+            ComObjects.VirtualDesktopManagerInternal.SwitchDesktop(desktop);
         }
         
         internal static void Create()
         {
-            VirtualDesktop.Create();
+            ComObjects.VirtualDesktopManagerInternal.CreateDesktopW();
         }
         
         internal static int CountDesktops()
         {
-            return VirtualDesktop.GetDesktops().Length;
+            return ComObjects.VirtualDesktopManagerInternal.GetCount();
         }
         
         internal static void Remove()
         {
-            VirtualDesktop.GetDesktops()[CountDesktops()-1].Remove();
+            Remove(CountDesktops() - 1);
         }
         
         internal static void Remove(int i)
         {
-            VirtualDesktop.GetDesktops()[i].Remove();
+            var desktops = ComObjects.VirtualDesktopManagerInternal.GetDesktops();
+            var desktop = desktops.Get<IVirtualDesktop>(i);
+            var fallback = desktops.Get<IVirtualDesktop>(i == 0 ? 1 : 0);
+            ComObjects.VirtualDesktopManagerInternal.RemoveDesktop(desktop, fallback);
         }
 
         internal static int CurrentDesktop()
         {
-            VirtualDesktop[] desktops = VirtualDesktop.GetDesktops();
-            VirtualDesktop current = VirtualDesktop.Current;
-            return desktops.Select((value, index) => new {Value = value, Index = index})
-                .Single(p => p.Value.Id.Equals(current.Id)).Index;
+            var current = ComObjects.VirtualDesktopManagerInternal.GetCurrentDesktop();
+            var desktops = ComObjects.VirtualDesktopManagerInternal.GetDesktops();
+            for (int i = 0; i < desktops.GetCount(); i++)
+            {
+                if (desktops.Get<IVirtualDesktop>(i).GetID().Equals(current.GetID()))
+                {
+                    return i;
+                }
+            }
+            throw new InvalidOperationException($"No desktop exists with GUID {current.GetID()}");
         }
 
         internal static void PinWindow(IntPtr handle)
         {
-            VirtualDesktop.PinWindow(handle);
+            ComObjects.ApplicationViewCollection.GetViewInFocus(out var view);
+            ComObjects.VirtualDesktopPinnedApps.PinView(view);
         }
 
         internal static void UnpinWindow(IntPtr handle)
         {
-            VirtualDesktop.UnpinWindow(handle);
+            ComObjects.ApplicationViewCollection.GetViewInFocus(out var view);
+            ComObjects.VirtualDesktopPinnedApps.UnpinView(view);
         }
 
         internal static void MatchCount(int count)
