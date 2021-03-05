@@ -59,13 +59,13 @@ namespace Core.Desktop
 
         internal static void PinWindow(IntPtr handle)
         {
-            ComObjects.ApplicationViewCollection.GetViewInFocus(out var view);
+            ComObjects.ApplicationViewCollection.GetViewForHwnd(handle, out var view);
             ComObjects.VirtualDesktopPinnedApps.PinView(view);
         }
 
         internal static void UnpinWindow(IntPtr handle)
         {
-            ComObjects.ApplicationViewCollection.GetViewInFocus(out var view);
+            ComObjects.ApplicationViewCollection.GetViewForHwnd(handle, out var view);
             ComObjects.VirtualDesktopPinnedApps.UnpinView(view);
         }
 
