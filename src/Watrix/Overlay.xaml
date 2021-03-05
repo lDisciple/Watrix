@@ -7,10 +7,51 @@
         mc:Ignorable="d"
         AllowsTransparency="True"
         WindowStyle="None"
+        WindowState="Maximized"
         Title="Overlay" Height="600" Width="900">
     <Grid Name="BackgroundPanel">
-        <DockPanel>
-            <Button Width="100" Height="100" Content="Center" Click="ButtonBase_OnClick" /> 
-        </DockPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
+            <Button Name="DebugBtn" Content="Debug" Padding="10" Click="DebugBtn_Click" />
+            <Button Name="ExitBtn" Content="Close" Padding="10" Click="ExitBtn_OnClick" />
+        </StackPanel>
+        <UniformGrid Grid.Row="1" Grid.Column="1" Background="Aqua" DockPanel.Dock="Top">
+            <Border Padding="10">
+                <DockPanel Background="Blue" />
+            </Border>
+            <Border Padding="10">
+                <DockPanel Background="Blue" />
+            </Border>
+            <Border Padding="10">
+                <DockPanel Background="Blue" />
+            </Border>
+            <Border Padding="10">
+                <DockPanel Background="Blue" />
+            </Border>
+            <Border Padding="10">
+                <DockPanel Background="Blue" />
+            </Border>
+            <Border Padding="10">
+                <DockPanel Background="Blue" />
+            </Border>
+            <Border Padding="10">
+                <DockPanel Background="Blue" />
+            </Border>
+            <Border Padding="10">
+                <DockPanel Background="Blue" />
+            </Border>
+            <Border Padding="10">
+                <DockPanel Background="Blue" />
+            </Border>
+        </UniformGrid>
     </Grid>
 </Window>

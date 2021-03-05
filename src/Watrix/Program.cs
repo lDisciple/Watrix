@@ -30,7 +30,6 @@ namespace Watrix
         {
             base.OnStartup(e);
             matrix = new DesktopMatrix(3,3);
-            Console.WriteLine(matrix.GetCurrentPosition().ToString());
             SetUpHotkeys(matrix);
             hotkeys.Start();
             Overlay overlay = new Overlay(matrix);

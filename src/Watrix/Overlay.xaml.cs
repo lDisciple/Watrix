@@ -20,41 +20,25 @@ namespace Watrix
             this.matrix = matrix;
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        protected override void OnActivated(EventArgs e)
         {
+            base.OnActivated(e);
             IntPtr current = new WindowInteropHelper(this).Handle;
             matrix.PinWindow(current);
-            
-            using (Bitmap bmpScreenCapture = new Bitmap(Screen.GetResolutionWidth(), 
-                Screen.GetResolutionHeight()))
-            using (Graphics g = Graphics.FromImage(bmpScreenCapture))
-            {
-                g.CopyFromScreen(0,0,0,0,
-                    bmpScreenCapture.Size, CopyPixelOperation.SourceCopy);
-                // bmpScreenCapture.Save("test.png");
-                ImageBrush brush = new ImageBrush();
-                brush.ImageSource = BmpImageFromBmp(bmpScreenCapture);
-                BackgroundPanel.Background = brush;
-            }
+            ImageBrush brush = new ImageBrush();
+            brush.ImageSource = Screenshot.screenshot();
+            BackgroundPanel.Background = brush;
+        }
+
+        private void DebugBtn_Click(object sender, RoutedEventArgs e)
+        {
 
         }
-        
-        private BitmapImage BmpImageFromBmp(Bitmap bmp)
+
+
+        private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            using (var memory = new System.IO.MemoryStream())
-            {
-                bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-                memory.Position = 0;
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-
-                return bitmapImage;
-            }
+            this.Close();
         }
     }
 }
