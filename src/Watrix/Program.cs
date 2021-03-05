@@ -6,6 +6,7 @@ using WindowsDesktop;
 using Core.Hotkeys;
 using Core.Hotkeys.Desktop;
 using Core.POC;
+using Core.COM;
 
 namespace Watrix
 {
@@ -34,13 +35,31 @@ namespace Watrix
         {
             base.OnStartup(e);
             matrix = new DesktopMatrix(3,3);
-            // Console.WriteLine(matrix.GetCurrentPosition().ToString());
-            // SetUpHotkeys(matrix);
-            // hotkeys.Start();
-
+            Console.WriteLine(matrix.GetCurrentPosition().ToString());
+            SetUpHotkeys(matrix);
+            hotkeys.Start();
+            Console.Out.WriteLine(123);
             Overlay overlay = new Overlay();
             overlay.Show();
-            overlay.Pin();
+            
+        }
+
+        public static void Pin(Window w)
+        {
+            IntPtr top = WinApi.User32.User32Methods.GetForegroundWindow();
+            IntPtr current = new WindowInteropHelper(w).Handle;
+            ComObjects.Initialize();
+            Guid desktop = ComObjects.VirtualDesktopManagerInternal.GetCurrentDesktop().GetID();
+            ComObjects.ApplicationViewCollection.GetViewInFocus(out var view);
+            Console.WriteLine(view);
+            ComObjects.ApplicationViewCollection.GetViews(out var views);
+            Console.WriteLine(views.GetCount());
+            ComObjects.VirtualDesktopPinnedApps.PinView(view);
+            Console.WriteLine(Application.Current.Properties.Keys.Count);
+            foreach (var key in Application.Current.Properties.Keys)
+            {
+                Console.WriteLine(key);
+            }
         }
     }
 }

@@ -24,15 +24,15 @@ namespace Core.POC
 
         public static void test()
         {
-            var desktops = VirtualDesktop.GetDesktops();
-            Console.Out.WriteLine($"{desktops.Length} desktops");
-            // Get Virtual Desktop for specific window
-            var desktop = desktops[0];
-
-            // Get the left/right desktop
-            var left  = desktop.GetLeft();
-            var right = desktop.GetRight();
-            right.Switch();
+            // var desktops = VirtualDesktop.GetDesktops();
+            // Console.Out.WriteLine($"{desktops.Length} desktops");
+            // // Get Virtual Desktop for specific window
+            // var desktop = desktops[0];
+            //
+            // // Get the left/right desktop
+            // var left  = desktop.GetLeft();
+            // var right = desktop.GetRight();
+            // right.Switch();
         }
     }
     

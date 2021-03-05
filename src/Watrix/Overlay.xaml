@@ -10,7 +10,7 @@
         Title="Overlay" Height="450" Width="800">
     <Grid Background="Aqua">
         <DockPanel>
-            <Button Width="100" Height="100" Content="Center" /> 
+            <Button Width="100" Height="100" Content="Center" Click="ButtonBase_OnClick" /> 
         </DockPanel>
     </Grid>
 </Window>

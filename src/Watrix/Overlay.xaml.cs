@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Net.NetworkInformation;
+using System.Windows;
 
 namespace Watrix
 {
@@ -7,6 +8,11 @@ namespace Watrix
         public Overlay()
         {
             InitializeComponent();
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            Program.Pin(this);
         }
     }
 }

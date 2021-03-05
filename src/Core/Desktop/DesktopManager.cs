@@ -2,7 +2,8 @@
 using System.Linq;
 using WindowsDesktop;
 
-namespace Core.Hotkeys.Desktop
+
+namespace Core.Desktop
 {
     public static class DesktopManager
     {

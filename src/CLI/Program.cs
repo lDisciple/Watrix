@@ -1,11 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows;
-using Core.Hotkeys;
-using Core.Hotkeys.Desktop;
-using WinApi.User32;
-using Core.POC;
+﻿
 namespace CLI
 {
     class Program
@@ -18,7 +11,6 @@ namespace CLI
             //
             // manager.Start();
             // Console.WriteLine("Started service");
-
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Interop;
+using Core.Desktop;
 
 namespace Core.Hotkeys.Desktop
 {
