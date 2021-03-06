@@ -14,9 +14,13 @@ namespace Core.Desktop
         
         internal static void GoTo(int i)
         {
+            ComObjects.VirtualDesktopManagerInternal.SwitchDesktop(GetDesktop(i));
+        }
+
+        internal static IVirtualDesktop GetDesktop(int i)
+        {
             var desktops = ComObjects.VirtualDesktopManagerInternal.GetDesktops();
-            var desktop = desktops.Get<IVirtualDesktop>(i);
-            ComObjects.VirtualDesktopManagerInternal.SwitchDesktop(desktop);
+            return desktops.Get<IVirtualDesktop>(i);
         }
         
         internal static void Create()
@@ -79,6 +83,12 @@ namespace Core.Desktop
             {
                 Create();
             }
+        }
+
+        public static void MoveForegroundWindowToDesktop(int i)
+        {
+            ComObjects.ApplicationViewCollection.GetViewInFocus( out var view);
+            ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, GetDesktop(i));
         }
     }
 }

@@ -21,38 +21,71 @@ namespace Watrix
         public void SetUpHotkeys(DesktopMatrix matrix, Overlay overlay)
         {
             hotkeys = new HotkeyManager();
+
+            #region Desktop switching
             hotkeys.Register("left", "control+alt", () =>
             {
-                matrix.MoveLeft();
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
                     Direction.LEFT));
+                matrix.MoveLeft();
             });
             hotkeys.Register("right", "control+alt", () =>
             {
-                matrix.MoveRight();
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
                     Direction.RIGHT));
+                matrix.MoveRight();
             });
             hotkeys.Register("up", "control+alt", () =>
             {
-                matrix.MoveUp();
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
                     Direction.UP));
+                matrix.MoveUp();
             });
             hotkeys.Register("down", "control+alt", () =>
             {
-                matrix.MoveDown();
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
                     Direction.DOWN));
+                matrix.MoveDown();
             });
+            #endregion
+            #region window moving
+            hotkeys.Register("left", "control+alt+shift", () =>
+            {
+                Messenger.Default.Send(new DesktopUpdateMessage(
+                    matrix.GetCurrentPosition(),
+                    Direction.LEFT));
+                matrix.MoveForegroundWindowLeft();
+            });
+            hotkeys.Register("right", "control+alt+shift", () =>
+            {
+                Messenger.Default.Send(new DesktopUpdateMessage(
+                    matrix.GetCurrentPosition(),
+                    Direction.RIGHT));
+                matrix.MoveForegroundWindowRight();
+            });
+            hotkeys.Register("up", "control+alt+shift", () =>
+            {
+                Messenger.Default.Send(new DesktopUpdateMessage(
+                    matrix.GetCurrentPosition(),
+                    Direction.UP));
+                matrix.MoveForegroundWindowUp();
+            });
+            hotkeys.Register("down", "control+alt+shift", () =>
+            {
+                Messenger.Default.Send(new DesktopUpdateMessage(
+                    matrix.GetCurrentPosition(),
+                    Direction.DOWN));
+                matrix.MoveForegroundWindowDown();
+            });
+            #endregion
             hotkeys.Register("escape", "shift", () =>
             {
-                hotkeys.Stop();
                 Messenger.Default.Send(new ExitMessage());
+                hotkeys.Stop();
             });
         }
         
@@ -60,11 +93,11 @@ namespace Watrix
         {
             base.OnStartup(e);
             matrix = new DesktopMatrix(3,3);
+
             Overlay overlay = new Overlay(matrix);
             SetUpHotkeys(matrix, overlay);
             hotkeys.Start();
-            // overlay.RaiseEvent();
-            overlay.Show();
+            // overlay.Show();
         }
     }
 }

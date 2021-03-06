@@ -8,6 +8,7 @@ using Core.Hotkeys.Desktop;
 using MVVMLight.Messaging;
 using Watrix.Messages;
 using Color = System.Windows.Media.Color;
+using Point = Core.Hotkeys.Desktop.Point;
 
 namespace Watrix
 {
@@ -70,11 +71,31 @@ namespace Watrix
             Dispatcher.BeginInvoke((Action)delegate()
             {
                 Debug.WriteLine($"DesktopUpdateMessage: {msg}");
-                UpdateTiles(msg.Y, msg.X);
+                Point p = new Point(msg.X, msg.Y);
+                AddDirectionToPoint(p, msg.Direction);
+                UpdateTiles(p.Y, p.X);
             });
            
         }
 
+        private void AddDirectionToPoint(Point p, Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.UP:
+                    p.Y = Math.Max(0, p.Y - 1);
+                    break;
+                case Direction.DOWN:
+                    p.Y = Math.Min(matrix.Rows-1, p.Y + 1);
+                    break;
+                case Direction.LEFT:
+                    p.X = Math.Max(0, p.X - 1);
+                    break;
+                case Direction.RIGHT:
+                    p.X = Math.Min(matrix.Columns - 1, p.X + 1);
+                    break;
+            }
+        }
         private void UpdateTiles(int r, int c)
         {
             for (int ri = 0; ri < 3; ri++)

@@ -8,14 +8,14 @@ namespace Core.Hotkeys.Desktop
      */
     public class DesktopMatrix
     {
-        private readonly int _rows;
-        private readonly int _columns;
+        public int Rows { get; }
+        public int Columns { get; }
 
         public DesktopMatrix(int rows, int columns)
         {
-            _rows = rows;
-            _columns = columns;
-            DesktopManager.MatchCount(_rows*_columns);
+            Rows = rows;
+            Columns = columns;
+            DesktopManager.MatchCount(Rows*Columns);
         }
 
         public void GoTo(Point p)
@@ -33,7 +33,7 @@ namespace Core.Hotkeys.Desktop
         public void MoveDown()
         {
             Point p = GetCurrentPosition();
-            p.Y = Math.Min(_rows-1, p.Y + 1);
+            p.Y = Math.Min(Rows-1, p.Y + 1);
             GoTo(p);
         }
 
@@ -47,8 +47,42 @@ namespace Core.Hotkeys.Desktop
         public void MoveRight()
         {
             Point p = GetCurrentPosition();
-            p.X = Math.Min(_columns-1, p.X + 1);
+            p.X = Math.Min(Columns-1, p.X + 1);
             GoTo(p);
+        }
+
+        public void MoveForegroundWindowUp()
+        {
+            Point p = GetCurrentPosition();
+            p.Y = Math.Max(0, p.Y - 1);
+            MoveForegroundWindowTo(p);
+        }
+
+        public void MoveForegroundWindowDown()
+        {
+            Point p = GetCurrentPosition();
+            p.Y = Math.Min(Rows-1, p.Y + 1);
+            MoveForegroundWindowTo(p);
+        }
+
+        public void MoveForegroundWindowLeft()
+        {
+            Point p = GetCurrentPosition();
+            p.X = Math.Max(0, p.X - 1);
+            MoveForegroundWindowTo(p);
+        }
+
+        public void MoveForegroundWindowRight()
+        {
+            Point p = GetCurrentPosition();
+            p.X = Math.Min(Columns-1, p.X + 1);
+            MoveForegroundWindowTo(p);
+        }
+        
+        private void MoveForegroundWindowTo(Point p)
+        {
+            DesktopManager.MoveForegroundWindowToDesktop(PointToIndex(p));
+            this.GoTo(p);
         }
 
         public Point GetCurrentPosition()
@@ -68,13 +102,14 @@ namespace Core.Hotkeys.Desktop
 
         private int PointToIndex(Point p)
         {
-            return p.X * _rows + p.Y;
+            return p.X * Rows + p.Y;
         }
 
         private Point IndexToPoint(int i)
         {
-            return new Point(i / _rows, i % _rows);
+            return new Point(i / Rows, i % Rows);
         }
+
     }
 
     public class Point
