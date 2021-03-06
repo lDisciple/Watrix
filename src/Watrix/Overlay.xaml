@@ -8,6 +8,8 @@
         AllowsTransparency="True"
         WindowStyle="None"
         WindowState="Maximized"
+        Topmost="True"
+        Background="Transparent"
         Title="Overlay" Height="600" Width="900">
     <Grid Name="BackgroundPanel">
         <Grid.ColumnDefinitions>

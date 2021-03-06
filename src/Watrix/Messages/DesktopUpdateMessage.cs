@@ -14,12 +14,21 @@ namespace Watrix.Messages
         public int X { get; set; }
         public int Y { get; set; }
         public Direction Direction { get; set; }
+        public bool WithWindow { get; set; }
 
         public DesktopUpdateMessage(int x, int y, Direction direction)
         {
             X = x;
             Y = y;
             Direction = direction;
+            WithWindow = false;
+        }
+        public DesktopUpdateMessage(int x, int y, Direction direction, bool withWindow)
+        {
+            X = x;
+            Y = y;
+            Direction = direction;
+            WithWindow = withWindow;
         }
 
         public DesktopUpdateMessage(Point point, Direction direction)
@@ -27,6 +36,14 @@ namespace Watrix.Messages
             X = point.X;
             Y = point.Y;
             Direction = direction;
+            WithWindow = false;
+        }
+        public DesktopUpdateMessage(Point point, Direction direction, bool withWindow)
+        {
+            X = point.X;
+            Y = point.Y;
+            Direction = direction;
+            WithWindow = withWindow;
         }
 
         public override string ToString()

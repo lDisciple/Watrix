@@ -28,28 +28,24 @@ namespace Watrix
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
                     Direction.LEFT));
-                matrix.MoveLeft();
             });
             hotkeys.Register("right", "control+alt", () =>
             {
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
                     Direction.RIGHT));
-                matrix.MoveRight();
             });
             hotkeys.Register("up", "control+alt", () =>
             {
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
                     Direction.UP));
-                matrix.MoveUp();
             });
             hotkeys.Register("down", "control+alt", () =>
             {
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
                     Direction.DOWN));
-                matrix.MoveDown();
             });
             #endregion
             #region window moving
@@ -57,29 +53,29 @@ namespace Watrix
             {
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
-                    Direction.LEFT));
-                matrix.MoveForegroundWindowLeft();
+                    Direction.LEFT,
+                    true));
             });
             hotkeys.Register("right", "control+alt+shift", () =>
             {
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
-                    Direction.RIGHT));
-                matrix.MoveForegroundWindowRight();
+                    Direction.RIGHT,
+                    true));
             });
             hotkeys.Register("up", "control+alt+shift", () =>
             {
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
-                    Direction.UP));
-                matrix.MoveForegroundWindowUp();
+                    Direction.UP,
+                    true));
             });
             hotkeys.Register("down", "control+alt+shift", () =>
             {
                 Messenger.Default.Send(new DesktopUpdateMessage(
                     matrix.GetCurrentPosition(),
-                    Direction.DOWN));
-                matrix.MoveForegroundWindowDown();
+                    Direction.DOWN,
+                    true));
             });
             #endregion
             hotkeys.Register("escape", "shift", () =>
