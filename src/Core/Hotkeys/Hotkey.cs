@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Hotkeys.Exceptions;
 using WinApi.User32;
 
 namespace Core.Hotkeys

@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Core.Hotkeys
+namespace Core.Hotkeys.Exceptions
 {
     /// <summary>
     ///     Thrown when an invalid key is provided for a hotkey.
     /// </summary>
     public class InvalidKeyException : Exception
     {
-        public InvalidKeyException(string? key) : base(FormatMessage(key))
+        public InvalidKeyException(string key) : base(FormatMessage(key))
         {
         }
 

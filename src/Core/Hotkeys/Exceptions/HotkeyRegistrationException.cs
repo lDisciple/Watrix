@@ -10,9 +10,6 @@ namespace Core.Hotkeys.Exceptions
     {
         public HotkeyRegistrationException(Hotkey hotkey) : base($"Failed to register hotkey: {hotkey}")
         {
-            this.hotkey = hotkey;
         }
-
-        public Hotkey hotkey { get; }
     }
 }
