@@ -9,7 +9,7 @@ namespace Core.Hotkeys
     /// <summary>
     /// Registers and starts the hotkey thread.
     /// </summary>
-    public class HotkeyRunner
+    internal class HotkeyRunner
     {
         private static int _currentId;
         private bool Running { get; set; }
@@ -21,7 +21,7 @@ namespace Core.Hotkeys
         /// Creates a hotkey runner using a dictionary of hotkey-callback pairs.
         /// </summary>
         /// <param name="callbacks">The dictionary of hotkey-callback pairs.</param>
-        public HotkeyRunner(Dictionary<Hotkey, Action> callbacks)
+        internal HotkeyRunner(Dictionary<Hotkey, Action> callbacks)
         {
             this._callbacks = callbacks;
 
@@ -39,7 +39,7 @@ namespace Core.Hotkeys
         /// </summary>
         /// <param name="callbacks">The dictionary of hotkey-callback pairs.</param>
         /// <param name="handle">A window to associate the hotkey registration with.</param>
-        public HotkeyRunner(Dictionary<Hotkey, Action> callbacks, IntPtr handle) : this(callbacks)
+        internal HotkeyRunner(Dictionary<Hotkey, Action> callbacks, IntPtr handle) : this(callbacks)
         {
             this._handle = handle;
         }
@@ -47,7 +47,7 @@ namespace Core.Hotkeys
         /// <summary>
         /// Starts the hotkey thread. 
         /// </summary>
-        public void Start()
+        internal void Start()
         {
             if (!Running)
             {
@@ -59,7 +59,7 @@ namespace Core.Hotkeys
         /// <summary>
         /// Stops the hotkey thread.
         /// </summary>
-        public void Stop()
+        internal void Stop()
         {
             Running = false;
         }
