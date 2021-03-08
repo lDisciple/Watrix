@@ -8,6 +8,7 @@
         <RuntimeIdentifiers>
             win10-x64;win10-x86
         </RuntimeIdentifiers>
+        <ApplicationIcon>../../.assets/logo.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
