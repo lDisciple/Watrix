@@ -1,8 +1,16 @@
 ﻿using System;
-using CLSID = Core.COM.CLSID;
 
 namespace Core.COM.Interfaces
 {
+	/// <summary>
+	/// A workaround for varying GUID values for the IVirtualDesktopManagerInternal interfaces.
+	/// Manages 3 different services in hope that one is not null.
+	///
+	/// Code from: https://github.com/Grabacr07/VirtualDesktop
+	/// </summary>
+	/// <remarks>
+	///	This class is marked for removal in a future release when GUIDs are detected instead of hardcoded.
+	/// </remarks>
 	public class VirtualDesktopManagerInternal
 		: IVirtualDesktopManagerInternal10130
 		, IVirtualDesktopManagerInternal10240
@@ -32,7 +40,7 @@ namespace Core.COM.Interfaces
 			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
 
 			object ppvObject;
-			shell.QueryService(CLSID.VirtualDesktopAPIUnknown, typeof(T).GUID, out ppvObject);
+			shell.QueryService(CLSID.VirtualDesktopApiUnknown, typeof(T).GUID, out ppvObject);
 
 			return (T)ppvObject;
 		}
