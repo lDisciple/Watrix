@@ -3,6 +3,10 @@ using System.Runtime.InteropServices;
 
 namespace Core.COM.Interfaces
 {
+	/// <summary>
+	/// A listener for virtual desktop events.
+	/// </summary>
+	/// <seealso cref="IVirtualDesktopNotificationService"/>
 	[ComImport]
 	[Guid("c179334c-4295-40d3-bea1-c654d965605a")]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

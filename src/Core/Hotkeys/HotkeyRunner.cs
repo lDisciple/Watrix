@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Core.Hotkeys.Exceptions;
 using WinApi.User32;
 
 namespace Core.Hotkeys
 {
+    /// <summary>
+    /// Registers and starts the hotkey thread.
+    /// </summary>
     public class HotkeyRunner
     {
         private static int _currentId;
@@ -13,6 +17,10 @@ namespace Core.Hotkeys
         private readonly Dictionary<Hotkey, Action> _callbacks;
         private readonly IntPtr _handle;
 
+        /// <summary>
+        /// Creates a hotkey runner using a dictionary of hotkey-callback pairs.
+        /// </summary>
+        /// <param name="callbacks">The dictionary of hotkey-callback pairs.</param>
         public HotkeyRunner(Dictionary<Hotkey, Action> callbacks)
         {
             this._callbacks = callbacks;
@@ -26,11 +34,19 @@ namespace Core.Hotkeys
             Running = false;
         }
 
+        /// <summary>
+        /// Creates a hotkey runner using a dictionary of hotkey-callback pairs.
+        /// </summary>
+        /// <param name="callbacks">The dictionary of hotkey-callback pairs.</param>
+        /// <param name="handle">A window to associate the hotkey registration with.</param>
         public HotkeyRunner(Dictionary<Hotkey, Action> callbacks, IntPtr handle) : this(callbacks)
         {
             this._handle = handle;
         }
-
+        
+        /// <summary>
+        /// Starts the hotkey thread. 
+        /// </summary>
         public void Start()
         {
             if (!Running)
@@ -40,11 +56,18 @@ namespace Core.Hotkeys
             }
         }
 
+        /// <summary>
+        /// Stops the hotkey thread.
+        /// </summary>
         public void Stop()
         {
             Running = false;
         }
 
+        /// <summary>
+        /// Registers a hotkey.
+        /// </summary>
+        /// <exception cref="HotkeyRegistrationException">Thrown if an invalid hotkey is registered.</exception>
         private void RegisterHotkeys()
         {
             IList<int> registeredIds = new List<int>();
@@ -66,6 +89,10 @@ namespace Core.Hotkeys
             }
         }
 
+        /// <summary>
+        /// De-registers the hotkeys provided.
+        /// </summary>
+        /// <param name="ids">A list of hotkey IDs that have been successfully registered.</param>
         private void DeregisterHotkeys(IEnumerable<int> ids)
         {
             foreach (var id in ids)
@@ -74,6 +101,10 @@ namespace Core.Hotkeys
             }
         }
 
+        /// <summary>
+        /// The hotkey thread's target.
+        /// Listens for messages related to hotkey presses.
+        /// </summary>
         private void RunnerFunction()
         {
             RegisterHotkeys();

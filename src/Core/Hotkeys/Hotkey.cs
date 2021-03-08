@@ -5,16 +5,31 @@ using WinApi.User32;
 
 namespace Core.Hotkeys
 {
+    /// <summary>
+    /// A combination of keyboard key and modifiers (e.g. control+alt)
+    /// </summary>
     public class Hotkey
     {
         public VirtualKey key { get; }
         public KeyModifierFlags modifiers { get; }
 
+        /// <summary>
+        /// Create a hotkey from a key and modifier bitset.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="modifiers">A bitset of modifiers.</param>
+        /// <seealso cref="KeyModifierFlags"/>
+        /// <seealso cref="VirtualKey"/>
         public Hotkey(VirtualKey key, KeyModifierFlags modifiers)
         {
             this.key = key;
             this.modifiers = modifiers;
         }
+        /// <summary>
+        /// Create a hotkey from key and modifier strings. 
+        /// </summary>
+        /// <param name="key">A string matching a key value.</param>
+        /// <param name="modifiers">A '+'-separated list of modifier values (without the 'MOD_' prefix).</param>
         public Hotkey(string key, string modifiers)
         {
             this.key = parseKey(key);
