@@ -2,15 +2,26 @@
 
 namespace Core.Display
 {
+    /// <summary>
+    /// A utility class used to determine the resolution of the screen.
+    /// </summary>
     public class Screen
     {
         [DllImport("user32.dll")]
         private static extern bool EnumDisplaySettings(string deviceName, int modeNum, ref Devmode devMode);
 
+        /// <summary>
+        /// Get the resolution width of the primary monitor.
+        /// </summary>
+        /// <returns>A width in pixels.</returns>
         public static int GetResolutionWidth()
         {
             return GetDm().dmPelsWidth;
         }
+        /// <summary>
+        /// Get the resolution height of the primary monitor.
+        /// </summary>
+        /// <returns>A height in pixels.</returns>
         public static int GetResolutionHeight()
         {
             return GetDm().dmPelsHeight;

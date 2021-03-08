@@ -3,15 +3,20 @@ using Core.Desktop;
 
 namespace Core.Hotkeys.Desktop
 {
-    /*
-     * Top-left is (0,0)
-     */
+    /// <summary>
+    /// Creates and manages a virtual desktop matrix.
+    /// </summary>
     public class DesktopMatrix
     {
         public int Rows { get; }
         public int Columns { get; }
         private IntPtr CapturedView { get; set; }
 
+        /// <summary>
+        /// Create a desktop matrix by defining the size of the matrix and creating/removing any necessary desktops.
+        /// </summary>
+        /// <param name="rows">The height of the matrix.</param>
+        /// <param name="columns">The width of the matrix.</param>
         public DesktopMatrix(int rows, int columns)
         {
             Rows = rows;
@@ -20,11 +25,19 @@ namespace Core.Hotkeys.Desktop
         }
 
         #region BasicMovement
-        public void GoTo(Point p)
+        /// <summary>
+        /// Moves to the given desktop.
+        /// </summary>
+        /// <param name="point">The point in the grid to go to.</param>
+        public void GoTo(Point point)
         {
-            DesktopManager.GoTo(PointToIndex(p));
+            DesktopManager.GoTo(PointToIndex(point));
         }
 
+        /// <summary>
+        /// Moves to the desktop above the current one.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveUp()
         {
             Point p = GetCurrentPosition();
@@ -32,6 +45,10 @@ namespace Core.Hotkeys.Desktop
             GoTo(p);
         }
 
+        /// <summary>
+        /// Moves to the desktop below the current one.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveDown()
         {
             Point p = GetCurrentPosition();
@@ -39,6 +56,10 @@ namespace Core.Hotkeys.Desktop
             GoTo(p);
         }
 
+        /// <summary>
+        /// Moves to the desktop to the left of the current one.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveLeft()
         {
             Point p = GetCurrentPosition();
@@ -46,6 +67,10 @@ namespace Core.Hotkeys.Desktop
             GoTo(p);
         }
 
+        /// <summary>
+        /// Moves to the desktop to right of the current one.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveRight()
         {
             Point p = GetCurrentPosition();
@@ -56,12 +81,20 @@ namespace Core.Hotkeys.Desktop
 
         #region CapturedWindow
 
+        /// <summary>
+        /// Moves to the desktop above the current one with the captured window.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveCapturedWindowUp()
         {
             Point p = GetCurrentPosition();
             p.Y = Math.Max(0, p.Y - 1);
             MoveForegroundWindowTo(p);
         }
+        /// <summary>
+        /// Moves to the desktop below the current one with the captured window.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveCapturedWindowDown()
         {
             Point p = GetCurrentPosition();
@@ -69,6 +102,10 @@ namespace Core.Hotkeys.Desktop
             MoveForegroundWindowTo(p);
         }
 
+        /// <summary>
+        /// Moves to the desktop to the left of the current one with the captured window.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveCapturedWindowLeft()
         {
             Point p = GetCurrentPosition();
@@ -76,6 +113,10 @@ namespace Core.Hotkeys.Desktop
             MoveForegroundWindowTo(p);
         }
 
+        /// <summary>
+        /// Moves to the desktop to the right of the current one with the captured window.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveCapturedWindowRight()
         {
             Point p = GetCurrentPosition();
@@ -83,12 +124,19 @@ namespace Core.Hotkeys.Desktop
             MoveForegroundWindowTo(p);
         }
         
-        private void MoveCapturedWindowTo(Point p)
+        /// <summary>
+        /// Moves to the given desktop with the captured window.
+        /// </summary>
+        /// <param name="point">The point in the grid to go to.</param>
+        private void MoveCapturedWindowTo(Point point)
         {
-            DesktopManager.MoveViewToDesktop(CapturedView, PointToIndex(p));
-            this.GoTo(p);
+            DesktopManager.MoveViewToDesktop(CapturedView, PointToIndex(point));
+            this.GoTo(point);
         }
 
+        /// <summary>
+        /// Captures/stores the current foreground window's reference for future use.
+        /// </summary>
         public void CaptureForegroundWindow()
         {
             CapturedView = DesktopManager.GetForegroundView();
@@ -97,6 +145,10 @@ namespace Core.Hotkeys.Desktop
 
         #region ForegroundWindows
         
+        /// <summary>
+        /// Moves to the desktop above the current one with the current foreground window.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveForegroundWindowUp()
         {
             Point p = GetCurrentPosition();
@@ -104,6 +156,10 @@ namespace Core.Hotkeys.Desktop
             MoveForegroundWindowTo(p);
         }
 
+        /// <summary>
+        /// Moves to the desktop below the current one with the current foreground window.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveForegroundWindowDown()
         {
             Point p = GetCurrentPosition();
@@ -111,6 +167,10 @@ namespace Core.Hotkeys.Desktop
             MoveForegroundWindowTo(p);
         }
 
+        /// <summary>
+        /// Moves to the desktop to the left of the current one with the current foreground window.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveForegroundWindowLeft()
         {
             Point p = GetCurrentPosition();
@@ -118,6 +178,10 @@ namespace Core.Hotkeys.Desktop
             MoveForegroundWindowTo(p);
         }
 
+        /// <summary>
+        /// Moves to the desktop to the right of the current one with the current foreground window.
+        /// If that desktop does not exist then the current desktop remains active.
+        /// </summary>
         public void MoveForegroundWindowRight()
         {
             Point p = GetCurrentPosition();
@@ -125,42 +189,70 @@ namespace Core.Hotkeys.Desktop
             MoveForegroundWindowTo(p);
         }
         
-        private void MoveForegroundWindowTo(Point p)
+        /// <summary>
+        /// Moves to the given desktop with the current foreground window.
+        /// </summary>
+        /// <param name="point">The point in the grid to go to.</param>
+        private void MoveForegroundWindowTo(Point point)
         {
-            DesktopManager.MoveForegroundWindowToDesktop(PointToIndex(p));
-            this.GoTo(p);
+            DesktopManager.MoveForegroundWindowToDesktop(PointToIndex(point));
+            this.GoTo(point);
         }
         
         #endregion
         
-
+        /// <summary>
+        /// Get the current desktop's position in the matrix/grid.
+        /// </summary>
+        /// <returns>The point corresponding to the current desktop.</returns>
         public Point GetCurrentPosition()
         {
             return IndexToPoint(DesktopManager.CurrentDesktop());
         }
 
+        /// <summary>
+        /// Pin the given window to all desktops.
+        /// </summary>
+        /// <param name="handle">The handle of the window to pin.</param>
         public void PinWindow(IntPtr handle)
         {
             DesktopManager.PinWindow(handle);
         }
         
+        /// <summary>
+        /// Unpin the given window from all desktops.
+        /// </summary>
+        /// <param name="handle">The handle of the window to unpin.</param>
         public void UnpinWindow(IntPtr handle)
         {
             DesktopManager.UnpinWindow(handle);
         }
 
-        private int PointToIndex(Point p)
+        /// <summary>
+        /// Converts a point to a flat index.
+        /// </summary>
+        /// <param name="point">A 2D point.</param>
+        /// <returns>An index to an array.</returns>
+        private int PointToIndex(Point point)
         {
-            return p.X * Rows + p.Y;
+            return point.X * Rows + point.Y;
         }
 
+        /// <summary>
+        /// Converts a flat index to a point in the matrix/grid.
+        /// </summary>
+        /// <param name="i">An index to an array.</param>
+        /// <returns>A 2D point.</returns>
         private Point IndexToPoint(int i)
         {
             return new Point(i / Rows, i % Rows);
         }
 
     }
-
+    
+    /// <summary>
+    /// A point in 2D space.
+    /// </summary>
     public class Point
     {
         public int X, Y;
