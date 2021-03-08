@@ -23,8 +23,8 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
-            <Button Name="DebugBtn" Content="Debug" Padding="10" Click="DebugBtn_Click" />
-            <Button Name="ExitBtn" Content="Close" Padding="10" Click="ExitBtn_OnClick" />
+            <!-- <Button Name="DebugBtn" Content="Debug" Padding="10" Click="DebugBtn_Click" /> -->
+            <!-- <Button Name="ExitBtn" Content="Close" Padding="10" Click="ExitBtn_OnClick" /> -->
         </StackPanel>
         <UniformGrid Name="ScreenGrid" Grid.Row="1" Grid.Column="1" DockPanel.Dock="Top">
             <Border Padding="5">
