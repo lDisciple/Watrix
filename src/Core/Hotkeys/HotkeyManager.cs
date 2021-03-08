@@ -4,23 +4,29 @@ using System.Collections.Generic;
 namespace Core.Hotkeys
 {
     /// <summary>
-    /// Builds and manages a set of hotkeys to register with callbacks.
+    ///     Builds and manages a set of hotkeys to register with callbacks.
     /// </summary>
-    public class HotkeyManager: IDisposable
+    public class HotkeyManager : IDisposable
     {
-        private Dictionary<Hotkey, Action> hotkeys;
-        private HotkeyRunner Runner { get; set; }
-        
+        private readonly Dictionary<Hotkey, Action> hotkeys;
+
         /// <summary>
-        /// Creates an empty set of hotkeys for registration.
+        ///     Creates an empty set of hotkeys for registration.
         /// </summary>
         public HotkeyManager()
         {
-            this.hotkeys = new Dictionary<Hotkey, Action>();
+            hotkeys = new Dictionary<Hotkey, Action>();
+        }
+
+        private HotkeyRunner Runner { get; set; }
+
+        public void Dispose()
+        {
+            Runner.Stop();
         }
 
         /// <summary>
-        /// Registers a hotkey.
+        ///     Registers a hotkey.
         /// </summary>
         /// <param name="key">The string representation of a keyboard key.</param>
         /// <param name="modifiers">A '+'-separated list of modifier values (without the 'MOD_' prefix).</param>
@@ -32,7 +38,7 @@ namespace Core.Hotkeys
         }
 
         /// <summary>
-        /// De-registers a hotkey.
+        ///     De-registers a hotkey.
         /// </summary>
         /// <param name="key">The string representation of a keyboard key.</param>
         /// <param name="modifiers">A '+'-separated list of modifier values (without the 'MOD_' prefix).</param>
@@ -42,14 +48,14 @@ namespace Core.Hotkeys
         }
 
         /// <summary>
-        /// Starts a new thread where the hotkeys are registered and monitored.
+        ///     Starts a new thread where the hotkeys are registered and monitored.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if a hotkey manager is already running.</exception>
         public void Start()
         {
             if (Runner == null)
             {
-                Runner = new HotkeyRunner(this.hotkeys);
+                Runner = new HotkeyRunner(hotkeys);
                 Runner.Start();
             }
             else
@@ -60,7 +66,7 @@ namespace Core.Hotkeys
         }
 
         /// <summary>
-        /// Stops the current running hotkey thread.
+        ///     Stops the current running hotkey thread.
         /// </summary>
         public void Stop()
         {
@@ -69,11 +75,6 @@ namespace Core.Hotkeys
                 Runner.Stop();
                 Runner = null;
             }
-        }
-
-        public void Dispose()
-        {
-            this.Runner.Stop();
         }
     }
 }

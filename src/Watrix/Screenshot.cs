@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
-using System.Windows.Media;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Media.Imaging;
-using Core.Display;
+using Core.Utils;
 
 namespace Watrix
 {
@@ -9,9 +10,9 @@ namespace Watrix
     {
         private static BitmapImage BmpImageFromBmp(Bitmap bmp)
         {
-            using (var memory = new System.IO.MemoryStream())
+            using (var memory = new MemoryStream())
             {
-                bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                bmp.Save(memory, ImageFormat.Png);
                 memory.Position = 0;
 
                 var bitmapImage = new BitmapImage();
@@ -25,15 +26,14 @@ namespace Watrix
             }
         }
 
-        public static BitmapImage screenshot()
+        public static BitmapImage TakeScreenshot()
         {
-            using Bitmap bmpScreenCapture = new Bitmap(Screen.GetResolutionWidth(), 
+            using var bmpScreenCapture = new Bitmap(Screen.GetResolutionWidth(),
                 Screen.GetResolutionHeight());
-            using Graphics g = Graphics.FromImage(bmpScreenCapture);
-            g.CopyFromScreen(0,0,0,0,
+            using var g = Graphics.FromImage(bmpScreenCapture);
+            g.CopyFromScreen(0, 0, 0, 0,
                 bmpScreenCapture.Size, CopyPixelOperation.SourceCopy);
             return BmpImageFromBmp(bmpScreenCapture);
         }
-        
     }
 }

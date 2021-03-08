@@ -5,108 +5,95 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Core.Hotkeys.Desktop;
+using Core.Desktop;
 using MVVMLight.Messaging;
 using Watrix.Messages;
-using Point = Core.Hotkeys.Desktop.Point;
+using Point = Core.Desktop.Point;
 
 namespace Watrix
 {
-
-    public partial class Overlay : Window
+    public partial class Overlay
     {
+        private readonly DesktopMatrix _matrix;
 
-        private DesktopMatrix matrix;
+        private readonly Panel[,] _tiles;
+        private DispatcherTimer _timer;
 
-        private Panel[,] tiles;
-        private int dispatchCounter = 0;
-        private DispatcherTimer timer;
-        
         public Overlay(DesktopMatrix matrix)
         {
             InitializeComponent();
-            this.matrix = matrix;
+            _matrix = matrix;
             Messenger.Default.Register<DesktopUpdateMessage>(this, OnDesktopUpdate);
             Messenger.Default.Register<ExitMessage>(this, OnExitMessage);
-            
-            tiles = new Panel[,]{
-                { Holder00, Holder01, Holder02 },
-                { Holder10, Holder11, Holder12 },
-                { Holder20, Holder21, Holder22 },
+
+            _tiles = new Panel[,]
+            {
+                {Holder00, Holder01, Holder02},
+                {Holder10, Holder11, Holder12},
+                {Holder20, Holder21, Holder22}
             };
         }
 
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            
-            IntPtr current = new WindowInteropHelper(this).Handle;
-            matrix.PinWindow(current);
 
-            SolidColorBrush screenGridBrush = new SolidColorBrush(Color.FromArgb(100,0,0,0));
+            var current = new WindowInteropHelper(this).Handle;
+            _matrix.PinWindow(current);
+
+            var screenGridBrush = new SolidColorBrush(Color.FromArgb(100, 0, 0, 0));
             ScreenGrid.Background = screenGridBrush;
 
-            var pos = matrix.GetCurrentPosition();
+            var pos = _matrix.GetCurrentPosition();
             UpdateTiles(pos.Y, pos.X);
         }
-        
+
         private void OnExitMessage(ExitMessage obj)
         {
-            Dispatcher.BeginInvoke((Action)delegate()
-            {
-                this.Close(); 
-            });
+            Dispatcher.BeginInvoke((Action) Close);
         }
-
 
         private void DebugBtn_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void ExitBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
-        
+
         private void OnDesktopUpdate(DesktopUpdateMessage msg)
         {
-            timer?.Stop();
-            Dispatcher.BeginInvoke((Action)delegate()
+            _timer?.Stop();
+            Dispatcher.BeginInvoke((Action) delegate
             {
-                if (msg.WithWindow) matrix.CaptureForegroundWindow();
+                if (msg.WithWindow) _matrix.CaptureForegroundWindow();
                 Show();
                 Topmost = true;
-                IntPtr current = new WindowInteropHelper(this).Handle;
-                matrix.PinWindow(current);
-                
-                Point p = new Point(msg.X, msg.Y);
+                var current = new WindowInteropHelper(this).Handle;
+                _matrix.PinWindow(current);
+
+                var p = new Point(msg.X, msg.Y);
                 AddDirectionToPoint(p, msg.Direction);
                 UpdateTiles(p.Y, p.X);
                 if (msg.WithWindow)
-                {
                     MoveWindow(msg.Direction);
-                }
                 else
-                {
                     MoveDesktop(msg.Direction);
-                }
 
-                timer = new DispatcherTimer
+                _timer = new DispatcherTimer
                 {
                     Interval = TimeSpan.FromSeconds(0.3)
                 };
-                timer.Start();
-                timer.Tick += (sender, e) =>
+                _timer.Start();
+                _timer.Tick += (sender, _) =>
                 {
                     (sender as DispatcherTimer)?.Stop();
                     Hide();
                 };
-                
+
                 Debug.WriteLine($"DesktopUpdateMessage: {msg}");
-                
             });
-           
         }
 
         private void AddDirectionToPoint(Point p, Direction direction)
@@ -117,25 +104,22 @@ namespace Watrix
                     p.Y = Math.Max(0, p.Y - 1);
                     break;
                 case Direction.DOWN:
-                    p.Y = Math.Min(matrix.Rows-1, p.Y + 1);
+                    p.Y = Math.Min(_matrix.Rows - 1, p.Y + 1);
                     break;
                 case Direction.LEFT:
                     p.X = Math.Max(0, p.X - 1);
                     break;
                 case Direction.RIGHT:
-                    p.X = Math.Min(matrix.Columns - 1, p.X + 1);
+                    p.X = Math.Min(_matrix.Columns - 1, p.X + 1);
                     break;
             }
         }
+
         private void UpdateTiles(int r, int c)
         {
-            for (int ri = 0; ri < 3; ri++)
-            {
-                for (int ci = 0; ci < 3; ci++)
-                {
-                    tiles[ri,ci].Opacity = ri == r && ci == c ? 1 : 0.5;
-                }
-            }            
+            for (var ri = 0; ri < 3; ri++)
+            for (var ci = 0; ci < 3; ci++)
+                _tiles[ri, ci].Opacity = ri == r && ci == c ? 1 : 0.5;
         }
 
         private void MoveDesktop(Direction direction)
@@ -143,34 +127,35 @@ namespace Watrix
             switch (direction)
             {
                 case Direction.UP:
-                    matrix.MoveUp();
+                    _matrix.MoveUp();
                     break;
                 case Direction.DOWN:
-                    matrix.MoveDown();
+                    _matrix.MoveDown();
                     break;
                 case Direction.LEFT:
-                    matrix.MoveLeft();
+                    _matrix.MoveLeft();
                     break;
                 case Direction.RIGHT:
-                    matrix.MoveRight();
+                    _matrix.MoveRight();
                     break;
             }
         }
+
         private void MoveWindow(Direction direction)
         {
             switch (direction)
             {
                 case Direction.UP:
-                    matrix.MoveCapturedWindowUp();
+                    _matrix.MoveCapturedWindowUp();
                     break;
                 case Direction.DOWN:
-                    matrix.MoveCapturedWindowDown();
+                    _matrix.MoveCapturedWindowDown();
                     break;
                 case Direction.LEFT:
-                    matrix.MoveCapturedWindowLeft();
+                    _matrix.MoveCapturedWindowLeft();
                     break;
                 case Direction.RIGHT:
-                    matrix.MoveCapturedWindowRight();
+                    _matrix.MoveCapturedWindowRight();
                     break;
             }
         }

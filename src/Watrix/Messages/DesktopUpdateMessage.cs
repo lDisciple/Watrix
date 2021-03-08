@@ -1,4 +1,4 @@
-﻿using Core.Hotkeys.Desktop;
+﻿using Core.Desktop;
 
 namespace Watrix.Messages
 {
@@ -9,13 +9,9 @@ namespace Watrix.Messages
         UP,
         DOWN
     }
+
     public class DesktopUpdateMessage
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public Direction Direction { get; set; }
-        public bool WithWindow { get; set; }
-
         public DesktopUpdateMessage(int x, int y, Direction direction)
         {
             X = x;
@@ -23,6 +19,7 @@ namespace Watrix.Messages
             Direction = direction;
             WithWindow = false;
         }
+
         public DesktopUpdateMessage(int x, int y, Direction direction, bool withWindow)
         {
             X = x;
@@ -38,6 +35,7 @@ namespace Watrix.Messages
             Direction = direction;
             WithWindow = false;
         }
+
         public DesktopUpdateMessage(Point point, Direction direction, bool withWindow)
         {
             X = point.X;
@@ -46,9 +44,15 @@ namespace Watrix.Messages
             WithWindow = withWindow;
         }
 
+        public int X { get; set; }
+        public int Y { get; set; }
+        public Direction Direction { get; set; }
+        public bool WithWindow { get; set; }
+
         public override string ToString()
         {
-            return $"{nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Direction)}: {Direction}, {nameof(WithWindow)}: {WithWindow}";
+            return
+                $"{nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Direction)}: {Direction}, {nameof(WithWindow)}: {WithWindow}";
         }
     }
 }
