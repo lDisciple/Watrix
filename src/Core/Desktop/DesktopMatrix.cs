@@ -10,6 +10,7 @@ namespace Core.Hotkeys.Desktop
     {
         public int Rows { get; }
         public int Columns { get; }
+        private IntPtr CapturedView { get; set; }
 
         public DesktopMatrix(int rows, int columns)
         {
@@ -18,6 +19,7 @@ namespace Core.Hotkeys.Desktop
             DesktopManager.MatchCount(Rows*Columns);
         }
 
+        #region BasicMovement
         public void GoTo(Point p)
         {
             DesktopManager.GoTo(PointToIndex(p));
@@ -50,7 +52,51 @@ namespace Core.Hotkeys.Desktop
             p.X = Math.Min(Columns-1, p.X + 1);
             GoTo(p);
         }
+        #endregion
 
+        #region CapturedWindow
+
+        public void MoveCapturedWindowUp()
+        {
+            Point p = GetCurrentPosition();
+            p.Y = Math.Max(0, p.Y - 1);
+            MoveForegroundWindowTo(p);
+        }
+        public void MoveCapturedWindowDown()
+        {
+            Point p = GetCurrentPosition();
+            p.Y = Math.Min(Rows-1, p.Y + 1);
+            MoveForegroundWindowTo(p);
+        }
+
+        public void MoveCapturedWindowLeft()
+        {
+            Point p = GetCurrentPosition();
+            p.X = Math.Max(0, p.X - 1);
+            MoveForegroundWindowTo(p);
+        }
+
+        public void MoveCapturedWindowRight()
+        {
+            Point p = GetCurrentPosition();
+            p.X = Math.Min(Columns-1, p.X + 1);
+            MoveForegroundWindowTo(p);
+        }
+        
+        private void MoveCapturedWindowTo(Point p)
+        {
+            DesktopManager.MoveViewToDesktop(CapturedView, PointToIndex(p));
+            this.GoTo(p);
+        }
+
+        public void CaptureForegroundWindow()
+        {
+            CapturedView = DesktopManager.GetForegroundView();
+        }
+        #endregion
+
+        #region ForegroundWindows
+        
         public void MoveForegroundWindowUp()
         {
             Point p = GetCurrentPosition();
@@ -84,6 +130,9 @@ namespace Core.Hotkeys.Desktop
             DesktopManager.MoveForegroundWindowToDesktop(PointToIndex(p));
             this.GoTo(p);
         }
+        
+        #endregion
+        
 
         public Point GetCurrentPosition()
         {

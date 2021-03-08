@@ -48,7 +48,7 @@ namespace Watrix.Messages
 
         public override string ToString()
         {
-            return $"{nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Direction)}: {Direction}";
+            return $"{nameof(X)}: {X}, {nameof(Y)}: {Y}, {nameof(Direction)}: {Direction}, {nameof(WithWindow)}: {WithWindow}";
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System;
 using Core.COM;
 
-
 namespace Core.Desktop
 {
-    public static class DesktopManager
+    internal static class DesktopManager
     {
 
         static DesktopManager()
@@ -85,10 +84,20 @@ namespace Core.Desktop
             }
         }
 
-        public static void MoveForegroundWindowToDesktop(int i)
+        internal static IntPtr GetForegroundView()
         {
-            ComObjects.ApplicationViewCollection.GetViewInFocus( out var view);
-            ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, GetDesktop(i));
+            ComObjects.ApplicationViewCollection.GetViewInFocus(out var ptr);
+            return ptr;
+        }
+
+        internal static void MoveViewToDesktop(IntPtr view, int desktop)
+        {
+            ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, GetDesktop(desktop));
+        }
+
+        internal static void MoveForegroundWindowToDesktop(int i)
+        {
+            MoveViewToDesktop(GetForegroundView(), i);
         }
     }
 }

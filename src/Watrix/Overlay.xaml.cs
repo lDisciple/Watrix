@@ -8,7 +8,6 @@ using System.Windows.Threading;
 using Core.Hotkeys.Desktop;
 using MVVMLight.Messaging;
 using Watrix.Messages;
-using Color = System.Windows.Media.Color;
 using Point = Core.Hotkeys.Desktop.Point;
 
 namespace Watrix
@@ -75,6 +74,7 @@ namespace Watrix
             timer?.Stop();
             Dispatcher.BeginInvoke((Action)delegate()
             {
+                if (msg.WithWindow) matrix.CaptureForegroundWindow();
                 Show();
                 Topmost = true;
                 IntPtr current = new WindowInteropHelper(this).Handle;
@@ -161,16 +161,16 @@ namespace Watrix
             switch (direction)
             {
                 case Direction.UP:
-                    matrix.MoveForegroundWindowUp();
+                    matrix.MoveCapturedWindowUp();
                     break;
                 case Direction.DOWN:
-                    matrix.MoveForegroundWindowDown();
+                    matrix.MoveCapturedWindowDown();
                     break;
                 case Direction.LEFT:
-                    matrix.MoveForegroundWindowLeft();
+                    matrix.MoveCapturedWindowLeft();
                     break;
                 case Direction.RIGHT:
-                    matrix.MoveForegroundWindowRight();
+                    matrix.MoveCapturedWindowRight();
                     break;
             }
         }
