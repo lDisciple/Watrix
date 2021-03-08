@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using WinApi.User32;
 
 namespace Core.Hotkeys
@@ -73,6 +75,23 @@ namespace Core.Hotkeys
             }
 
             return value;
+        }
+
+        public override string ToString()
+        {
+            IList<string> modifierList = new List<string>();
+            var modifierEntries = Enum.GetNames<KeyModifierFlags>()
+                .Zip(Enum.GetValues<KeyModifierFlags>());
+            foreach (var (name, value) in modifierEntries)
+            {
+                if ((modifiers & value) > 0)
+                {
+                    modifierList.Add(name);
+                }
+            }
+
+            string modifierString = string.Join("+",modifierList.ToArray());
+            return $"{key}[{modifierString}]";
         }
     }
 }
