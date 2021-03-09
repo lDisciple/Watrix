@@ -18,6 +18,7 @@ namespace Watrix
 
         private readonly Panel[,] _tiles;
         private DispatcherTimer _timer;
+        private int dispatchCounter = 0;
 
         public Overlay(DesktopMatrix matrix)
         {
@@ -65,6 +66,7 @@ namespace Watrix
         private void OnDesktopUpdate(DesktopUpdateMessage msg)
         {
             _timer?.Stop();
+            int currentDispatch = ++dispatchCounter;
             Dispatcher.BeginInvoke((Action) delegate
             {
                 if (msg.WithWindow) _matrix.CaptureForegroundWindow();
@@ -89,8 +91,11 @@ namespace Watrix
                 _timer.Tick += (sender, _) =>
                 {
                     (sender as DispatcherTimer)?.Stop();
-                    Hide();
-                    if (msg.WithWindow) _matrix.PutCapturedWindowInFocus();
+                    if (currentDispatch == dispatchCounter)
+                    {
+                        Hide();
+                        if (msg.WithWindow) _matrix.PutCapturedWindowInFocus();
+                    }
                 };
 
                 Debug.WriteLine($"DesktopUpdateMessage: {msg}");

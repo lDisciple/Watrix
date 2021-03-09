@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Core.Desktop
 {
@@ -189,6 +190,7 @@ namespace Core.Desktop
         public void CaptureForegroundWindow()
         {
             CapturedWindow = DesktopManager.GetForegroundWindow();
+            Debug.WriteLine(CapturedWindow, "CAPTWND");
         }
 
         public void PutCapturedWindowInFocus()
