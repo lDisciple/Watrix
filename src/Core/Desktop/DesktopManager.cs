@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Data;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Text;
 using Core.COM;
+using Core.COM.Interfaces;
+using WinApi.User32;
 
 namespace Core.Desktop
 {
@@ -125,19 +131,52 @@ namespace Core.Desktop
         ///     Gets the current foreground view.
         /// </summary>
         /// <returns>A reference to a view</returns>
-        internal static IntPtr GetForegroundView()
+        internal static IntPtr GetForegroundWindow()
         {
-            ComObjects.ApplicationViewCollection.GetViewInFocus(out var ptr);
-            return ptr;
+            IntPtr handle = User32Methods.FindWindow(null, null);
+            Debug.WriteLine("Begin top window search:", "TWSearch");
+            while (!handle.Equals(IntPtr.Zero))
+            {
+                if (User32Methods.IsWindowVisible(handle))
+                {
+                    try
+                    {
+                        ComObjects.ApplicationViewCollection.GetViewForHwnd(handle, out var view);
+                        var onDesktop = ComObjects.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle);
+                        var pinnable = ComObjects.VirtualDesktopManagerInternal.CanViewMoveDesktops(view);
+
+
+                        StringBuilder sb = new StringBuilder(40);
+                        User32Methods.GetWindowText(handle, sb, 40);
+                        var s = sb.ToString();
+                        if (s.Length > 0)
+                        {
+                            Debug.WriteLine($"{s}: {pinnable} {onDesktop}", "TWSearch");
+                        }
+
+                        if (onDesktop && pinnable)
+                        {
+                            return handle;
+                        }
+                    }
+                    catch (COMException e) when (e.HResult == -2147319765)
+                    {
+                    }
+                }
+                handle = User32Methods.GetWindow(handle, 2);
+            }
+            return IntPtr.Zero;
         }
 
         /// <summary>
         ///     Moves a given view/window to the given desktop.
         /// </summary>
-        /// <param name="view">A reference to a view.</param>
+        /// <param name="whnd">A reference to a window.</param>
         /// <param name="desktop">The destination desktop.</param>
-        internal static void MoveViewToDesktop(IntPtr view, int desktop)
+        internal static void MoveWindowToDesktop(IntPtr whnd, int desktop)
         {
+            if (whnd.Equals(IntPtr.Zero)) return;
+            ComObjects.ApplicationViewCollection.GetViewForHwnd(whnd, out var view);
             ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, GetDesktop(desktop));
         }
 
@@ -147,7 +186,13 @@ namespace Core.Desktop
         /// <param name="i">The index of the destination desktop.</param>
         internal static void MoveForegroundWindowToDesktop(int i)
         {
-            MoveViewToDesktop(GetForegroundView(), i);
+            var window = GetForegroundWindow();
+            MoveWindowToDesktop(window, i);
+        }
+
+        internal static void FocusWindow(IntPtr hwnd)
+        {
+            User32Methods.SetForegroundWindow(hwnd);
         }
     }
 }

@@ -62,9 +62,25 @@ namespace Core.COM
         {
             arr.GetAt(
                 (uint) i,
-                typeof(IVirtualDesktop).GUID,
-                out var desktop);
-            return (TElement) desktop;
+                typeof(TElement).GUID,
+                out var element);
+            return (TElement) element;
+        }
+
+        /// <summary>
+        ///     An extension method which allows IObjectArrays to be more naturally indexed.
+        /// </summary>
+        /// <param name="arr">The Object array to be indexed.</param>
+        /// <param name="i">The index of the requested item.</param>
+        /// <typeparam name="TElement">The type of the requested item.</typeparam>
+        /// <returns>The element at index <paramref name="i" /> of <paramref name="arr" />.</returns>
+        public static TElement Get<TElement>(this IObjectArray arr, uint i)
+        {
+            arr.GetAt(
+                i,
+                typeof(TElement).GUID,
+                out var element);
+            return (TElement) element;
         }
     }
 }

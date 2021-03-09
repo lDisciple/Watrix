@@ -90,6 +90,7 @@ namespace Watrix
                 {
                     (sender as DispatcherTimer)?.Stop();
                     Hide();
+                    if (msg.WithWindow) _matrix.PutCapturedWindowInFocus();
                 };
 
                 Debug.WriteLine($"DesktopUpdateMessage: {msg}");

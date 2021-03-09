@@ -192,7 +192,7 @@ namespace Core.COM.Interfaces
 	[ComImport]
     [Guid("f31574d6-b682-4cdc-bd56-1827860abec6")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IVirtualDesktopManagerInternal14328
+	internal interface IVirtualDesktopManagerInternal14328
     {
 	    /// <summary>
 	    ///     Get the number of existing virtual desktops.

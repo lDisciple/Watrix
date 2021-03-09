@@ -11,7 +11,7 @@ namespace Core.COM.Interfaces
 	[ComImport]
     [Guid("a5cd92ff-29be-454c-8d04-d82879fb3f1b")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IVirtualDesktopManager
+	internal interface IVirtualDesktopManager
     {
 	    /// <summary>
 	    ///     Indicates whether the provided window is on the currently active virtual desktop.

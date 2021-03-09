@@ -12,7 +12,7 @@ namespace Core.COM.Interfaces
 	[ComImport]
     [Guid("1841C6D7-4F9D-42C0-AF41-8747538F10E5")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IApplicationViewCollection
+	internal interface IApplicationViewCollection
     {
 	    /// <summary>
 	    ///     Retrieve all views.
@@ -47,7 +47,7 @@ namespace Core.COM.Interfaces
 	    /// </summary>
 	    /// <param name="application">The application of the requested view.</param>
 	    /// <param name="view">The output destination for the retrieved view.</param>
-	    int GetViewForApplication(object application, out IntPtr view);
+	    int GetViewForApplication(object  application, out IntPtr view);
 
 	    /// <summary>
 	    ///     Retrieve a view based on its Application User Model ID.

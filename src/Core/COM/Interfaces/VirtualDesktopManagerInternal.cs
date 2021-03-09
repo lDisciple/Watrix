@@ -10,7 +10,7 @@ namespace Core.COM.Interfaces
 	/// <remarks>
 	///     This class is marked for removal in a future release when GUIDs are detected instead of hardcoded.
 	/// </remarks>
-	public class VirtualDesktopManagerInternal
+    internal class VirtualDesktopManagerInternal
         : IVirtualDesktopManagerInternal10130
             , IVirtualDesktopManagerInternal10240
             , IVirtualDesktopManagerInternal14328

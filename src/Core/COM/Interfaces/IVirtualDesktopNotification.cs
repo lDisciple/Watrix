@@ -10,7 +10,7 @@ namespace Core.COM.Interfaces
 	[ComImport]
     [Guid("c179334c-4295-40d3-bea1-c654d965605a")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IVirtualDesktopNotification
+	internal interface IVirtualDesktopNotification
     {
         void VirtualDesktopCreated(IVirtualDesktop pDesktop);
 

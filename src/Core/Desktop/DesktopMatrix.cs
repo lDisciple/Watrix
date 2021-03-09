@@ -21,7 +21,7 @@ namespace Core.Desktop
 
         public int Rows { get; }
         public int Columns { get; }
-        private IntPtr CapturedView { get; set; }
+        private IntPtr CapturedWindow { get; set; }
 
         /// <summary>
         ///     Get the current desktop's position in the matrix/grid.
@@ -179,7 +179,7 @@ namespace Core.Desktop
         /// <param name="point">The point in the grid to go to.</param>
         private void MoveCapturedWindowTo(Point point)
         {
-            DesktopManager.MoveViewToDesktop(CapturedView, PointToIndex(point));
+            DesktopManager.MoveWindowToDesktop(CapturedWindow, PointToIndex(point));
             GoTo(point);
         }
 
@@ -188,7 +188,12 @@ namespace Core.Desktop
         /// </summary>
         public void CaptureForegroundWindow()
         {
-            CapturedView = DesktopManager.GetForegroundView();
+            CapturedWindow = DesktopManager.GetForegroundWindow();
+        }
+
+        public void PutCapturedWindowInFocus()
+        {
+            DesktopManager.FocusWindow(CapturedWindow);
         }
 
         #endregion
