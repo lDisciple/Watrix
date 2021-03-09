@@ -101,8 +101,14 @@ namespace Core.Desktop
         /// <param name="handle">The handle of the window to pin.</param>
         internal static void PinWindow(IntPtr handle)
         {
-            ComObjects.ApplicationViewCollection.GetViewForHwnd(handle, out var view);
-            ComObjects.VirtualDesktopPinnedApps.PinView(view);
+            try
+            {
+                ComObjects.ApplicationViewCollection.GetViewForHwnd(handle, out var view);
+                ComObjects.VirtualDesktopPinnedApps.PinView(view);
+            } catch (COMException e) when (e.HResult == -2147319765)
+            {
+                Console.Error.WriteLine("Could not pin this window. Please make sure it is not hidden.");
+            }
         }
 
         /// <summary>
@@ -111,8 +117,15 @@ namespace Core.Desktop
         /// <param name="handle">The handle of the window to unpin.</param>
         internal static void UnpinWindow(IntPtr handle)
         {
-            ComObjects.ApplicationViewCollection.GetViewForHwnd(handle, out var view);
-            ComObjects.VirtualDesktopPinnedApps.UnpinView(view);
+            try
+            {
+                ComObjects.ApplicationViewCollection.GetViewForHwnd(handle, out var view);
+                ComObjects.VirtualDesktopPinnedApps.UnpinView(view);
+            }
+            catch (COMException e) when (e.HResult == -2147319765)
+            {
+                Console.Error.WriteLine("Could not pin this window. Please make sure it is not hidden.");
+            }
         }
 
         /// <summary>
@@ -132,6 +145,48 @@ namespace Core.Desktop
         /// </summary>
         /// <returns>A reference to a view</returns>
         internal static IntPtr GetForegroundWindow()
+        {
+            Debug.WriteLine("Begin top window search:", "TWSearch");
+            IntPtr result = IntPtr.Zero;
+            User32Methods.EnumWindows((whnd, _) =>
+            {
+                if (whnd.Equals(IntPtr.Zero)) return false;
+                if (User32Methods.IsWindowVisible(whnd))
+                {
+                    try
+                    {
+                        ComObjects.ApplicationViewCollection.GetViewForHwnd(whnd, out var view);
+                        var onDesktop = ComObjects.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(whnd);
+                        var pinnable = ComObjects.VirtualDesktopManagerInternal.CanViewMoveDesktops(view);
+
+                        StringBuilder sb = new StringBuilder(40);
+                        User32Methods.GetWindowText(whnd, sb, 40);
+                        var s = sb.ToString();
+                        if (s.Length > 0)
+                        {
+                            Debug.WriteLine($"{s}: {pinnable} {onDesktop}", "TWSearch");
+                        }
+
+                        if (onDesktop && pinnable)
+                        {
+                            result = whnd;
+                            return false;
+                        }
+                    }
+                    catch (COMException e) when (e.HResult == -2147319765)
+                    {
+                    }
+                }
+
+                return true;
+            }, IntPtr.Zero);
+            return result;
+        }
+        /// <summary>
+        ///     Gets the current foreground view.
+        /// </summary>
+        /// <returns>A reference to a view</returns>
+        internal static IntPtr GetForegroundWindow2()
         {
             IntPtr handle = User32Methods.FindWindow(null, null);
             Debug.WriteLine("Begin top window search:", "TWSearch");
