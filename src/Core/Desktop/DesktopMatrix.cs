@@ -3,11 +3,14 @@ using System.Diagnostics;
 
 namespace Core.Desktop
 {
+    
     /// <summary>
     ///     Creates and manages a virtual desktop matrix.
     /// </summary>
     public class DesktopMatrix
     {
+        private IntPtr _overlayHandle = IntPtr.Zero;
+            
         /// <summary>
         ///     Create a desktop matrix by defining the size of the matrix and creating/removing any necessary desktops.
         /// </summary>
@@ -257,6 +260,18 @@ namespace Core.Desktop
         }
 
         #endregion
+
+        /// <summary>
+        /// Sets the overlay window for this matrix.
+        /// This is used to prevent capturing the overlay when moving windows.
+        /// </summary>
+        /// <param name="handle">The overlay's window handle.</param>
+        public void SetOverlayWindow(IntPtr handle)
+        {
+            DesktopManager.UnignoreWindow(_overlayHandle);
+            DesktopManager.IgnoreWindow(_overlayHandle);
+            _overlayHandle = handle;
+        }
     }
 
     /// <summary>

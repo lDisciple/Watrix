@@ -18,12 +18,13 @@ namespace Watrix
 
         private readonly Panel[,] _tiles;
         private DispatcherTimer _timer;
-        private int dispatchCounter = 0;
+        private int _dispatchCounter = 0;
 
         public Overlay(DesktopMatrix matrix)
         {
             InitializeComponent();
             _matrix = matrix;
+            
             Messenger.Default.Register<DesktopUpdateMessage>(this, OnDesktopUpdate);
             Messenger.Default.Register<ExitMessage>(this, OnExitMessage);
 
@@ -41,6 +42,7 @@ namespace Watrix
 
             var current = new WindowInteropHelper(this).Handle;
             _matrix.PinWindow(current);
+            _matrix.SetOverlayWindow(current);
 
             var screenGridBrush = new SolidColorBrush(Color.FromArgb(100, 0, 0, 0));
             ScreenGrid.Background = screenGridBrush;
@@ -66,7 +68,7 @@ namespace Watrix
         private void OnDesktopUpdate(DesktopUpdateMessage msg)
         {
             _timer?.Stop();
-            int currentDispatch = ++dispatchCounter;
+            int currentDispatch = ++_dispatchCounter;
             Dispatcher.BeginInvoke((Action) delegate
             {
                 if (msg.WithWindow) _matrix.CaptureForegroundWindow();
@@ -91,7 +93,7 @@ namespace Watrix
                 _timer.Tick += (sender, _) =>
                 {
                     (sender as DispatcherTimer)?.Stop();
-                    if (currentDispatch == dispatchCounter)
+                    if (currentDispatch == _dispatchCounter)
                     {
                         Hide();
                         if (msg.WithWindow) _matrix.PutCapturedWindowInFocus();

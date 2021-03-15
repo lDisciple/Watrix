@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using Core.COM;
-using Core.COM.Interfaces;
 using WinApi.User32;
 
 namespace Core.Desktop
@@ -14,9 +13,33 @@ namespace Core.Desktop
     /// </summary>
     internal static class DesktopManager
     {
+        private static readonly HashSet<IntPtr> IgnoredWindows;
+
         static DesktopManager()
         {
             ComObjects.Initialize();
+            IgnoredWindows = new HashSet<IntPtr>();
+        }
+
+        /// <summary>
+        /// Add a window to the ignore list for window searches. 
+        /// </summary>
+        /// <param name="hwnd">The window's handler.</param>
+        internal static void IgnoreWindow(IntPtr hwnd)
+        {
+            if (hwnd.Equals(IntPtr.Zero)) return;
+            IgnoredWindows.Add(hwnd);
+        }
+        
+        
+        /// <summary>
+        /// Remove a window from the ignore list for window searches. 
+        /// </summary>
+        /// <param name="hwnd">The window's handler.</param>
+        internal static void UnignoreWindow(IntPtr hwnd)
+        {
+            if (hwnd.Equals(IntPtr.Zero)) return;
+            IgnoredWindows.Remove(hwnd);
         }
 
         /// <summary>
@@ -31,8 +54,8 @@ namespace Core.Desktop
         /// <summary>
         ///     Gets a virtual desktop at a given index.
         /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
+        /// <param name="i">The index of the desktop.</param>
+        /// <returns>The requested desktop.</returns>
         internal static IVirtualDesktop GetDesktop(int i)
         {
             var desktops = ComObjects.VirtualDesktopManagerInternal.GetDesktops();
@@ -155,6 +178,8 @@ namespace Core.Desktop
                 {
                     try
                     {
+                        if (IgnoredWindows.Contains(whnd)) return true;
+                        
                         ComObjects.ApplicationViewCollection.GetViewForHwnd(whnd, out var view);
                         var onDesktop = ComObjects.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(whnd);
                         var pinnable = ComObjects.VirtualDesktopManagerInternal.CanViewMoveDesktops(view);
@@ -192,7 +217,7 @@ namespace Core.Desktop
             Debug.WriteLine("Begin top window search:", "TWSearch");
             while (!handle.Equals(IntPtr.Zero))
             {
-                if (User32Methods.IsWindowVisible(handle))
+                if (User32Methods.IsWindowVisible(handle) && !IgnoredWindows.Contains(handle))
                 {
                     try
                     {
@@ -245,6 +270,10 @@ namespace Core.Desktop
             MoveWindowToDesktop(window, i);
         }
 
+        /// <summary>
+        /// Gives the given window focus.
+        /// </summary>
+        /// <param name="hwnd">The Window's handler.</param>
         internal static void FocusWindow(IntPtr hwnd)
         {
             User32Methods.SetForegroundWindow(hwnd);
